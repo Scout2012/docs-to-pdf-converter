@@ -5,10 +5,8 @@
 *.ear
 
 /.metadata
-
-/docs-to-pdf-converter/bin
-
 target/
+/docs-to-pdf-converter/bin
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
