@@ -31,7 +31,7 @@ public class MainClass{
 		try{
 			converter = processArguments(args);
 		} catch (Exception e){
-			System.out.println("\n\nInput\\Output file not specified properly.");
+			System.out.println("\n\nInput\\Output file not specified properly.\n" + e.getMessage());
 			return;
 		}
 
@@ -42,7 +42,7 @@ public class MainClass{
 			try {
 				converter.convert();
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("Error converting: \n " + e.getMessage());
 			}
 		}
 
