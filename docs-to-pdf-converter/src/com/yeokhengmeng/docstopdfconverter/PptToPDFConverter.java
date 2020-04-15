@@ -1,4 +1,5 @@
 package com.yeokhengmeng.docstopdfconverter;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -9,14 +10,13 @@ import java.io.OutputStream;
 import org.apache.poi.hslf.model.Slide;
 import org.apache.poi.hslf.usermodel.SlideShow;
 
-public class PptToPDFConverter extends PptxToPDFConverter {
+public class PptToPDFConverter extends PptxToPDFConverter{
 
 	private Slide[] slides;
 	
-	public PptToPDFConverter(InputStream inStream, OutputStream outStream, boolean showMessages, boolean closeStreamsWhenComplete) {
+	public PptToPDFConverter(InputStream inStream, OutputStream outStream, boolean showMessages, boolean closeStreamsWhenComplete){
 		super(inStream, outStream, showMessages, closeStreamsWhenComplete);
 	}
-
 
 	@Override	
 	protected Dimension processSlides() throws IOException{
@@ -41,5 +41,4 @@ public class PptToPDFConverter extends PptxToPDFConverter {
 	protected Color getSlideBGColor(int index){
 		return slides[index].getBackground().getFill().getForegroundColor();
 	}
-
 }

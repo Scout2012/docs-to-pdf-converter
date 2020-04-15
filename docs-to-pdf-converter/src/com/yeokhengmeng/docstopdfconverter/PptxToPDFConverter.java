@@ -1,4 +1,5 @@
 package com.yeokhengmeng.docstopdfconverter;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -17,25 +18,18 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfWriter;
 
+public class PptxToPDFConverter extends Converter{	
 
-public class PptxToPDFConverter extends Converter{
-
-	
-
-	public PptxToPDFConverter(InputStream inStream, OutputStream outStream, boolean showMessages, boolean closeStreamsWhenComplete) {
+	public PptxToPDFConverter(InputStream inStream, OutputStream outStream, boolean showMessages, boolean closeStreamsWhenComplete){
 		super(inStream, outStream, showMessages, closeStreamsWhenComplete);
 	}
 
-
 	private XSLFSlide[] slides;
-	
 
 	@Override
-	public void convert() throws Exception {
+	public void convert() throws Exception{
 		loading();
 		
-
-
 		Dimension pgsize = processSlides();
 		
 		processing();
@@ -43,14 +37,13 @@ public class PptxToPDFConverter extends Converter{
 	    double zoom = 2; // magnify it by 2 as typical slides are low res
 	    AffineTransform at = new AffineTransform();
 	    at.setToScale(zoom, zoom);
-
 		
 		Document document = new Document();
 
 		PdfWriter writer = PdfWriter.getInstance(document, outStream);
 		document.open();
 		
-		for (int i = 0; i < getNumSlides(); i++) {
+		for (int i = 0; i < getNumSlides(); i++){
 
 			BufferedImage bufImg = new BufferedImage((int)Math.ceil(pgsize.width*zoom), (int)Math.ceil(pgsize.height*zoom), BufferedImage.TYPE_INT_RGB);
 			Graphics2D graphics = bufImg.createGraphics();
@@ -60,7 +53,7 @@ public class PptxToPDFConverter extends Converter{
 			graphics.fill(new Rectangle2D.Float(0, 0, pgsize.width, pgsize.height));
 			try{
 				drawOntoThisGraphic(i, graphics);
-			} catch(Exception e){
+			}catch(Exception e){
 				//Just ignore, draw what I have
 			}
 			
@@ -76,8 +69,6 @@ public class PptxToPDFConverter extends Converter{
 		//Not sure what repercussions are there for closing a writer but just do it.
 		writer.close();
 		finished();
-		
-
 	}
 	
 	protected Dimension processSlides() throws IOException{
@@ -92,7 +83,6 @@ public class PptxToPDFConverter extends Converter{
 		return slides.length;
 	}
 	
-	
 	protected void drawOntoThisGraphic(int index, Graphics2D graphics){
 		slides[index].draw(graphics);
 	}
@@ -100,12 +90,4 @@ public class PptxToPDFConverter extends Converter{
 	protected Color getSlideBGColor(int index){
 		return slides[index].getBackground().getFillColor();
 	}
-	
-	
-	
-	
-
-
-
-
 }

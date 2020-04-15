@@ -17,12 +17,12 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class Window extends Application {
+public class Window extends Application{
 	String pathFileToBe = null;
 	String fileExtension = null;
 
 	 @Override
-	    public void start(Stage primaryStage) {    
+	    public void start(Stage primaryStage){    
 		 	MenuBar menuBar = new MenuBar();
 		 	
 		 	Menu fileOption = new Menu("File");
@@ -35,7 +35,7 @@ public class Window extends Application {
 		 	
 		 	chooseFile.getExtensionFilters().add(new FileChooser.ExtensionFilter("Document Files", "*.doc", "*.docx", "*.ppt", "*.pptx", "*.odt"));
 		 	
-		 	openOption.setOnAction(e -> {
+		 	openOption.setOnAction(e ->{
 		 		pathFileToBe = chooseFile.showOpenDialog(primaryStage).getAbsolutePath();
 		 		fileExtension = pathFileToBe.substring(pathFileToBe.lastIndexOf('.') + 1);
 		 		convertButton.setDisable(false);
@@ -45,26 +45,26 @@ public class Window extends Application {
 	        
 	        menuBar.getMenus().add(fileOption);
 	        
-	        convertButton.setOnAction(new EventHandler<ActionEvent>() {
+	        convertButton.setOnAction(new EventHandler<ActionEvent>(){
 	        	 
 	            @Override
-	            public void handle(ActionEvent event) {
+	            public void handle(ActionEvent event){
 	            	System.out.println(pathFileToBe);
 	            	Converter converter;
 
 	        		try{
 	        			converter = ConverterRunner.getConvertType(pathFileToBe, fileExtension);
-	        		} catch (Exception e){
+	        		}catch (Exception e){
 	        			System.out.println("\n\nInput\\Output file not specified properly.\n" + e.getMessage());
 	        			return;
 	        		}
 
 	        		if(converter == null){
 	        			System.out.println("Unable to determine type of input file.");
-	        		} else {
-	        			try {
+	        		}else{
+	        			try{
 	        				converter.convert();
-	        			} catch (Exception e) {
+	        			}catch (Exception e){
 	        				System.out.println("Error converting: \n " + e.getMessage());
 	        			}
 	        		}
