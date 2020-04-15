@@ -7,13 +7,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.kohsuke.args4j.CmdLineException;
-import org.kohsuke.args4j.CmdLineParser;
+import org.apache.commons.io.FilenameUtils;
+
 import org.kohsuke.args4j.Option;
 
-
 public class ConverterRunner{
-
 
 	public static final String VERSION_STRING = "\nDocs to PDF Converter Version 1.7 (8 Dec 2013)\n\nThe MIT License (MIT)\nCopyright (c) 2013-2014 Yeo Kheng Meng";
 	public enum DOC_TYPE {
@@ -25,42 +23,36 @@ public class ConverterRunner{
 	}
 
 	public static Converter getConvertType(String pathToBeConverted, String fileExtension) throws Exception {
-//			String outPath = values.outFilePath;
 			boolean shouldShowMessages = false;
 			Converter converter = null;
 
-
 			if(pathToBeConverted == null){
-//				parser.printUsage(System.err);
 				throw new IllegalArgumentException();
 			}
 
-//			if(outPath == null){
-//				outPath = changeExtensionToPDF(inPath);
-//			}
-
-
-			String lowerCaseInPath = pathToBeConverted.toLowerCase();
+			String pathDiskLocation = FilenameUtils.getPrefix(pathToBeConverted);
+			String basePath = FilenameUtils.getPath(pathToBeConverted);
+			String fileName = FilenameUtils.getBaseName(pathToBeConverted);
 			
 			InputStream inStream = getInFileStream(pathToBeConverted);
-			OutputStream outStream = getOutFileStream("C:\\Users\\Scout 2012\\Desktop\\test.pdf" );
+			String fullPath = pathDiskLocation + basePath + fileName + ".pdf";
+			OutputStream outStream = getOutFileStream(fullPath);
 			
-			if(lowerCaseInPath.endsWith("doc")){
+			if(pathToBeConverted.endsWith("doc")){
 				converter = new DocToPDFConverter(inStream, outStream, shouldShowMessages, true);
-			} else if (lowerCaseInPath.endsWith("docx")){
+			} else if (pathToBeConverted.endsWith("docx")){
 				converter = new DocxToPDFConverter(inStream, outStream, shouldShowMessages, true);
-			} else if(lowerCaseInPath.endsWith("ppt")){
+			} else if(pathToBeConverted.endsWith("ppt")){
 				converter = new PptToPDFConverter(inStream, outStream, shouldShowMessages, true);
-			} else if(lowerCaseInPath.endsWith("pptx")){
+			} else if(pathToBeConverted.endsWith("pptx")){
 				converter = new PptxToPDFConverter(inStream, outStream, shouldShowMessages, true);
-			} else if(lowerCaseInPath.endsWith("odt")){
+			} else if(pathToBeConverted.endsWith("odt")){
 				converter = new OdtToPDF(inStream, outStream, shouldShowMessages, true);
 			} else {
 				converter = null;
 			}
 
 		return converter;
-
 	}
 
 
@@ -69,11 +61,9 @@ public class ConverterRunner{
 		@Option(name = "-type", aliases = "-t", required = false, usage = "Specifies doc converter. Leave blank to let program decide by input extension.")
 		public DOC_TYPE type = null;
 
-
 		@Option(name = "-inputPath", aliases = {"-i", "-in", "-input"}, required = false,  metaVar = "<path>",
 				usage = "Specifies a path for the input file.")
 		public String inFilePath = null;
-
 
 		@Option(name = "-outputPath", aliases = {"-o", "-out", "-output"}, required = false, metaVar = "<path>",
 				usage = "Specifies a path for the output PDF.")
@@ -84,8 +74,6 @@ public class ConverterRunner{
 
 		@Option(name = "-version", aliases = {"-ver"}, required = false, usage = "To view version code.")
 		public boolean version = false;
-
-
 	}
 
 	//From http://stackoverflow.com/questions/941272/how-do-i-trim-a-file-extension-from-a-string-in-java
@@ -105,8 +93,7 @@ public class ConverterRunner{
 		String addPDFExtension = removedExtension + ".pdf";
 
 		return addPDFExtension;
-	}
-	
+	}	
 	
 	protected static InputStream getInFileStream(String inputFilePath) throws FileNotFoundException{
 		File inFile = new File(inputFilePath);
@@ -128,15 +115,4 @@ public class ConverterRunner{
 		FileOutputStream oStream = new FileOutputStream(outFile);
 		return oStream;
 	}
-
-
-
-
-
-
-
-
-
-
-
 }
